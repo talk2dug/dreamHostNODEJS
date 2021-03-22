@@ -84,7 +84,7 @@ cameraNodes.on('connection', socket => {
   socket.on('videoFile', function(data) {
     //console.log("videoFile:  " + data)
     for(var i=0;i<data.length;i++){
-      //console.log(data[i])
+      console.log(data[i])
       socket.emit('getVideoInfo',data[i])
     }
     
@@ -98,7 +98,7 @@ cameraNodes.on('connection', socket => {
   })
   socket.on('systemOnline', function(data){
     var dateNOW = moment().toISOString()
-    console.log(data);
+   
     cams.exists({nodeName:data.name}, function (err, doc) { 
       if (err){ 
       
@@ -147,12 +147,12 @@ cameraNodes.on('connection', socket => {
     
     
     
-    //socket.emit("getVideos")
+    socket.emit("getVideos")
 
 
   })
   socket.on('videoInfo', function(data){
-    //console.log(data.nodeinfo)
+    console.log(data.nodeinfo)
   
  try{
   vids.exists({fileLocation:data.metadata.format.filename}, function (err, doc) { 
@@ -199,7 +199,7 @@ cameraNodes.on('connection', socket => {
         })
         vid.save()
       }catch(err){console.log(err)}
-        //console.log(vid)
+        console.log(err)
 
 
 

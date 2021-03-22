@@ -10,29 +10,22 @@ router.get("/haha", async (req, res) => {
 })
 // Get all posts
 
-router.get("/oldestVideo", async (req,res) =>{
-var days = []
-    vids.find({}).exec(function(err, docs) { 
-        for(var i=0;i<docs.length;i++){
-            var day = moment(docs[i].dateTime).format("MM-DD-YYYY")
-            var weekDay = moment(docs[i].dateTime).format("Do")
-            days.push(weekDay);
-           
-        }
-        
-        res.send(days ); 
-    
-    
-    
-    });
-
-
+router.get("/getPerfDataNode/:node", async (req,res) => {
+    const nodeName = req.params.node
+    perfmon.find({camera:nodeName}).sort([['DateTime', 1]]).exec(function(err, docs) { 
+          
+    if (err){ 
+        console.log(err); 
+    } 
+    else{
+        res.send(docs)
+    }
 
 
 
 
 })
-
+})
 
 router.post("/adddata/:node", async (req, res) => {
 	const perf = new perfmon(req)

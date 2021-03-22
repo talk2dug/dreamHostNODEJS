@@ -8,6 +8,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var cameras = require('./routes/cameras')
 var perfmon = require('./routes/perfmon')
+var management = require('./routes/management');
 var app = express();
 
 // view engine setup
@@ -24,6 +25,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/cameras', cameras);
 app.use('/perfmon', perfmon);
+app.use('/management', management);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

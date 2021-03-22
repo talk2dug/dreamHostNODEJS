@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const schema = mongoose.Schema({
     'camera':String,
-
+'upDated': { type: Date, default: Date.now },
 'currentLoad':{ 
 	'avgLoad': Number,
         'currentLoad': Number,

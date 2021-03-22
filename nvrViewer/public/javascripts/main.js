@@ -216,7 +216,9 @@ var grid = "<div class='container'>"+
                   "<div class='card border-dark mb-4' style='max-width: 100%;'>"+
                   "<div class='card-header actionHeader'>Camera Info</div>"+
                     "<div class='card-body text-dark'>"+ 
-                    
+                    "<div class='container'>"+
+          "<canvas id='myChart' width='400' height='400'></canvas>"+
+          "</div>"+
                     "</div>"+
                   "</div>"+
                   "</div>"+
@@ -300,10 +302,7 @@ var grid2 = "<div class='container'>"+
     "<div class='card' style='width: 50%;'>"+
         "<div class='card-body'>"+
           "<div class='container'>"+
-            "<div class='row' id='videoListGrid'>"+
-              
-              
-            "</div>"+
+          "<canvas id='myChart' width='400' height='400'></canvas>"+
           "</div>"+
         "</div>"+
       "</div>"+
@@ -684,7 +683,7 @@ $(function() {
       for(var i=0;i<data.length;i++){
         var checkedinTime = moment(data[i].lastCheckIn).format("MM-DD hh:mm")
         
-        $('#cameraListItems').append("<a href='#' class='list-group-item list-group-item-action' aria-current='true'>"+
+        $('#cameraListItems').append("<a href='#' class='list-group-item list-group-item-action' aria-current='true' id='"+ data[i].nodeName +"'>"+
                                       "<div class='d-flex w-100 justify-content-between'>"+
                                       "<h5 class='mb-1'>"+ data[i].nodeName +"</h5>"+
                                       "<small class='text-muted'>"+ checkedinTime  +"</small>"+
@@ -710,14 +709,52 @@ $(function() {
 
 
 
-        $("#camTable tr").on("click", function(e) {
+        $(".list-group-item").on("click", function() {
          
-          var $row = $(this).closest("tr");    // Find the row
-          var text = $row.find(".nname").text(); // Find the text
-          
-            console.log(text);
+          //$('#myModal').modal('show');
+     
+
+          var ctx = document.getElementById('myChart');
+ 
+          var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+            console.log(this.id);
             ///////
-            $.getJSON("http://192.168.196.123:3001/cameras/getCameraInfo/"+text, function(data) {
+            $.getJSON("http://192.168.196.123:3001/cameras/getCameraInfo/"+this.id, function(data) {
              
             console.log(data)
             
@@ -1038,7 +1075,7 @@ $.getJSON(getURLString, function(data) {
   for(var i=0;i<data.cam2.length;i++){
 
     try {
-      var cleanedtime = moment(data.cam1[i].DateTime).format("HH:mm")
+      var cleanedtime = moment(data.cam2[i].DateTime).format("HH:mm")
       $('#videoDates').append("<li class='list-group-item'>"+cleanedtime+"</li>")
       
     } catch (error) {
@@ -1059,7 +1096,7 @@ $.getJSON(getURLString, function(data) {
   for(var i=0;i<data.cam3.length;i++){
  
     try {
-      var cleanedtime = moment(data.cam1[i].DateTime).format("HH:mm")
+      var cleanedtime = moment(data.cam3[i].DateTime).format("HH:mm")
       $('#ulCam3').append("<li class='list-group-item'>"+cleanedtime+"</li>")
     } catch (error) {
       console.log(error)
@@ -1073,7 +1110,7 @@ $.getJSON(getURLString, function(data) {
 
   $('#ulCam1').html(dailyVidsItemsLIcam1)
 
-  $('#myModal').modal('show');
+ 
 
 var i = 0; // define i
 
